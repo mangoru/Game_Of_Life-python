@@ -1,13 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/jenv,virtualenv,venv
-# Edit at https://www.toptal.com/developers/gitignore?templates=jenv,virtualenv,venv
-
-### JEnv ###
-# JEnv local Java version configuration file
-.java-version
-
-# Used by previous versions of JEnv
-.jenv-version
+# Created by https://www.toptal.com/developers/gitignore/api/venv,virtualenv
+# Edit at https://www.toptal.com/developers/gitignore?templates=venv,virtualenv
 
 ### venv ###
 # Virtualenv
@@ -21,11 +14,11 @@
 [Ss]cripts
 pyvenv.cfg
 .venv
-env
 pip-selfcheck.json
-
+env
+.vscode
 ### VirtualEnv ###
-# Virtualenv
+Virtualenv
 # http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
 
-# End of https://www.toptal.com/developers/gitignore/api/jenv,virtualenv,venv
+# End of https://www.toptal.com/developers/gitignore/api/venv,virtualenv
