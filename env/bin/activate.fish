@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/walter2/Git_general/Agorims_whit_python/GameOfLife/env"
+set -gx VIRTUAL_ENV "/home/mangoru/pyProjects/GameOfLife/env"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

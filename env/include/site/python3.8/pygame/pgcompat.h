@@ -12,7 +12,6 @@
 /* Define some aliases for the removed PyInt_* functions */
 #define PyInt_Check(op) PyLong_Check(op)
 #define PyInt_FromString PyLong_FromString
-#define PyInt_FromUnicode PyLong_FromUnicode
 #define PyInt_FromLong PyLong_FromLong
 #define PyInt_FromSize_t PyLong_FromSize_t
 #define PyInt_FromSsize_t PyLong_FromSsize_t
@@ -22,6 +21,8 @@
 #define PyInt_AsUnsignedLongLongMask PyLong_AsUnsignedLongLongMask
 #define PyInt_AS_LONG PyLong_AS_LONG
 #define PyNumber_Int PyNumber_Long
+/* Int and Long are identical in Py3 so only check one */
+#define INT_CHECK(op) PyLong_Check(op)
 
 /* Weakrefs flags changed in 3.x */
 #define Py_TPFLAGS_HAVE_WEAKREFS 0
@@ -30,9 +31,6 @@
 #define MODINIT_RETURN(x) return x
 #define MODINIT_DEFINE(mod_name) PyMODINIT_FUNC PyInit_##mod_name (void)
 #define DECREF_MOD(mod) Py_DECREF (mod)
-
-/* Type header differs. */
-#define TYPE_HEAD(x,y) PyVarObject_HEAD_INIT(x,y)
 
 /* Text interface. Use unicode strings. */
 #define Text_Type PyUnicode_Type
@@ -84,15 +82,13 @@
 
 #define PY3 0
 
+/* Check both Int and Long in PY2 */
+#define INT_CHECK(op) (PyInt_Check(op) || PyLong_Check(op))
+
 /* Module init function returns nothing. */
 #define MODINIT_RETURN(x) return
 #define MODINIT_DEFINE(mod_name) PyMODINIT_FUNC init##mod_name (void)
 #define DECREF_MOD(mod)
-
-/* Type header differs. */
-#define TYPE_HEAD(x,y)                          \
-    PyObject_HEAD_INIT(x)                       \
-    0,
 
 /* Text interface. Use ascii strings. */
 #define Text_Type PyString_Type
@@ -184,18 +180,8 @@
                          start, stop, step, slicelength)
 #endif
 
-/* Support new buffer protocol? */
-#if !defined(PG_ENABLE_NEWBUF)  /* allow for command line override */
-#if !defined(PYPY_VERSION)
-#define PG_ENABLE_NEWBUF 1
-#else
-#define PG_ENABLE_NEWBUF 0
-#endif
-#endif /* !defined(PG_ENABLE_NEWBUF) */
-
-
 #if defined(SDL_VERSION_ATLEAST)
-#if !(SDL_VERSION_ATLEAST(2, 0, 5))
+#if (SDL_VERSION_ATLEAST(2, 0, 0)) && !(SDL_VERSION_ATLEAST(2, 0, 5))
 /* These functions require SDL 2.0.5 or greater.
 
   https://wiki.libsdl.org/SDL_SetWindowResizable
@@ -210,5 +196,12 @@ SDL_Surface * SDL_CreateRGBSurfaceWithFormat(Uint32 flags, int width, int height
 #endif
 #endif /* defined(SDL_VERSION_ATLEAST) */
 
+// Currently needed to build scrap.c, event.c, display.c
+// with Windows SDK 10.0.18362.0 and SDL1 build
+#ifdef _MSC_VER
+    #ifndef WINDOWS_IGNORE_PACKING_MISMATCH
+        #define WINDOWS_IGNORE_PACKING_MISMATCH
+    #endif
+#endif
 
 #endif /* ~PGCOMPAT_INTERNAL_H */

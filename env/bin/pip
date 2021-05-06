@@ -1,4 +1,4 @@
-#!/home/walter2/Git_general/Agorims_whit_python/GameOfLife/env/bin/python3.8
+#!/home/mangoru/pyProjects/GameOfLife/env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
